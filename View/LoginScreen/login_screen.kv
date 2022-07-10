@@ -1,0 +1,57 @@
+#: import os os
+
+<CustomTextField@MDTextField>:
+    fill_color: 0, 0, 0, .2
+    multiline: False
+    write_tab: False
+    pos_hint:{"center_x": .5}
+    size_hint: None, None
+    width: app.textfield_width
+    height: app.textfield_height
+    font_size: app.textfield_font
+    color_mode: 'custom'
+    line_color_focus: 1, 0, 1, 1
+    line_color_normal: app.theme_cls.primary_color
+
+<MyButton@MDRoundFlatButton>:
+    size_hint: None, None
+    font_size: app.textfield_font
+    pos_hint: {"center_x": .5}
+
+<LoginScreenView>
+    FitImage:
+        source: f"{os.environ['PASS_APP']}/assets/images/second.jpg"
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(50)
+        spacing: dp(40)
+
+        CustomTextField:
+            id: user
+            on_text_validate: root.login()
+            hint_text: 'USERNAME'
+
+
+        CustomTextField:
+            id: code
+            hint_text: 'PASSWORD'
+            on_text_validate: root.login()
+            password: True
+            password_mask: '*'
+
+        MyButton:
+            text: 'Enter'
+            font_size: dp(80)
+            width: dp(200)
+            height: dp(100)
+            on_press: root.login()
+
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: dp(20)
+
+            MyButton:
+                text: 'CLOSE'
+                width: dp(100)
+                height: dp(30)
+                on_release: app.stop()

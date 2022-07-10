@@ -1,0 +1,61 @@
+
+<CustomTextField@MDTextField>:
+    fill_color: 0, 0, 0, .2
+    multiline: False
+    write_tab: False
+    pos_hint:{"center_x": .5}
+    size_hint: None, None
+    width: app.textfield_width
+    height: app.textfield_height
+    font_size: app.textfield_font
+    color_mode: 'custom'
+    line_color_focus: 1, 0, 1, 1
+    line_color_normal: app.theme_cls.primary_color
+
+
+<MyButton@MDRoundFlatButton>:
+    size_hint: None, None
+    font_size: app.textfield_font
+    pos_hint: {"center_x": .5}
+
+<GeneratorLabel@MDLabel>
+    markup: True
+    halign: "center"
+    font_size: app.textfield_font
+    theme_text_color: "Custom"
+    text_color: 1, 1, 1, 1
+
+
+<GeneratorScreenView>
+    FitImage:
+        source: 'assets/images/fourth.jpg'
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(20)
+
+        GeneratorLabel:
+            id: label1
+            size_hint: 1, .6
+            text: root.label_text
+            on_ref_press: root.print_it(self)
+
+        CustomTextField:
+            id: num_char
+            hint_text: 'Number of \n characters'
+            width: dp(110)
+            height: dp(30)
+
+        GeneratorLabel:
+            id: label2
+            size_hint: 1, .6
+            text: ''
+
+        MyButton:
+            text: 'Generate'
+            on_press: root.generate_password()
+
+        MyButton:
+            text: "Back"
+            on_press: label2.text = ""; label1.text = "Enter number of characters"; root.parent.switch_screen('main')

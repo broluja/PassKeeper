@@ -1,0 +1,109 @@
+<CustomTextField@MDTextField>:
+    fill_color: 0, 0, 0, .2
+    multiline: False
+    write_tab: False
+    pos_hint:{"center_x": .5}
+    size_hint: None, None
+    width: app.textfield_width
+    height: app.textfield_height
+    font_size: app.textfield_font
+    color_mode: 'custom'
+    line_color_focus: 1, 0, 1, 1
+    line_color_normal: app.theme_cls.primary_color
+
+
+<MyButton@MDRoundFlatButton>:
+    size_hint: None, None
+    font_size: app.textfield_font
+    pos_hint: {"center_x": .5}
+
+
+<MainScreenLabel@MDLabel>
+    font_size: app.textfield_font
+    theme_text_color: "Custom"
+    text_color: 1, 1, 1, 1
+    text: ''
+
+
+<MainScreenView>
+    on_pre_enter: info.text = ''
+    FitImage:
+        source: 'assets/images/main.jpg'
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(10)
+        padding: dp(15)
+
+        CustomTextField:
+            id: platform
+            hint_text: 'platform'
+
+        CustomTextField:
+            id: username
+            hint_text: 'username/email'
+
+        CustomTextField:
+            id: password
+            hint_text: 'password'
+            on_double_tap: root.paste_password()
+
+        MDBoxLayout:
+            orientation: "horizontal"
+            spacing: dp(20)
+            padding: [40, 5]
+
+            MainScreenLabel:
+                id: blank
+
+            MyButton:
+                text:"Add"
+                width: dp(200)
+                height: dp(100)
+                on_release: root.add_data()
+
+            MyButton:
+                text:"Clear"
+                width: dp(200)
+                height: dp(100)
+                on_release: root.clear_data()
+
+
+        MainScreenLabel:
+            padding: [50, 5]
+            id: info
+
+        MainScreenLabel:
+            id: blank1
+
+        FloatLayout:
+            pos: 0, 0
+            size: root.width, root.height
+            padding: dp(10)
+            MDFloatingActionButtonSpeedDial:
+                callback: root.callback
+                data: root.data
+                root_button_anim: True
+
+
+<Content>
+    orientation: 'vertical'
+    spacing: dp(25)
+    padding: dp(50)
+    size_hint_y: None
+    height: dp(350)
+    MDLabel:
+        halign: 'center'
+        id: label_info
+        text: "Enter platform"
+        font_size: app.textfield_font
+
+    MDTextField:
+        id: platform
+        hint_text: 'Platform'
+        width: app.textfield_width // 2
+        height: app.textfield_height
+        font_size: app.textfield_font // 2
+
+    MyButton:
+        text: 'Erase'
+        on_press: root.remove_record()
