@@ -1,0 +1,65 @@
+#:import get_hex_from_color kivy.utils.get_hex_from_color
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import os os
+#:set primary get_hex_from_color(app.theme_cls.primary_color)
+
+
+<RegisterTextField@MDTextField>
+    hint_text_color_normal: 1, 1, 1, 1
+    line_color_normal: 1, 1, 1, 1
+    multiline: False
+    write_tab: False
+    font_size: app.textfield_font
+
+<RegisterScreenView>
+
+    FitImage:
+        source: f"{os.environ['PASS_APP']}/assets/images/squirrel.jpg"
+
+    MDFloatingActionButton:
+        icon: 'arrow-left-thick'
+        on_press: app.manager_screen.switch_screen('login')
+        pos_hint: {"center_y": .92, "center_x": .92}
+
+    MDLabel:
+        text: f"Load[color={primary}]66[/color]"
+        color: 1, 1, 1, 1
+        bold: True
+        pos_hint: {"center_y": .7}
+        halign: "center"
+        markup: True
+        font_style: app.font_style
+
+    MDBoxLayout:
+        id: field_box
+        orientation: "vertical"
+        adaptive_height: True
+        size_hint_x: .6
+        pos_hint: {"center_x": .5, "center_y": .4}
+
+        RegisterTextField:
+            id: email
+            hint_text: "Email Address"
+
+        RegisterTextField:
+            id: password1
+            hint_text: "Password"
+            password: True
+            password_mask: "*"
+
+        RegisterTextField:
+            id: password2
+            hint_text: "Confirm Password"
+            password: True
+            password_mask: "*"
+            on_text_validate: print() # root.verify_code()
+
+    MDRoundFlatButton:
+        text: "Register"
+        theme_text_color: "Custom"
+        line_color: 1, 1, 1, 1
+        icon_color: 1, 1, 1, 1
+        pos_hint: {"center_x": .5}
+        y: field_box.y - (self.height + dp(42))
+        font_size: app.textfield_font
+        on_press: print() # root.verify_code()

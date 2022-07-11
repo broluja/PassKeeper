@@ -1,4 +1,6 @@
 #: import os os
+#: import get_hex_from_color kivy.utils.get_hex_from_color
+#: set primary get_hex_from_color(app.theme_cls.primary_color)
 
 <CustomTextField@MDTextField>:
     fill_color: 0, 0, 0, .2
@@ -39,19 +41,23 @@
             password: True
             password_mask: '*'
 
+        MDLabel:
+            markup: True
+            text: f"Have no account?[ref=<str>][color={primary}] Sign Up![/color][/ref]"
+            color: 1,1,1
+            halign: "center"
+            on_ref_press: app.manager_screen.switch_screen('register')
+
+
         MyButton:
             text: 'Enter'
-            font_size: dp(80)
-            width: dp(200)
-            height: dp(100)
+            font_size: app.textfield_font
             on_press: root.login()
 
         BoxLayout:
             orientation: 'vertical'
-            spacing: dp(20)
 
             MyButton:
-                text: 'CLOSE'
-                width: dp(100)
-                height: dp(30)
+                text: 'Exit'
+                font_size: app.textfield_font
                 on_release: app.stop()

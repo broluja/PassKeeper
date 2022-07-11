@@ -3,3 +3,5 @@
 .idea
 /passwords.db
 /venv/
+
+__pycache__

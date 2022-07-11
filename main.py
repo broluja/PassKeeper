@@ -24,10 +24,12 @@ class PassApp(MDApp):
             self.textfield_width = dp(260)
             self.textfield_height = dp(48)
             self.textfield_font = dp(28)
+            self.font_style = 'H5'
         else:
             self.textfield_width = dp(550)
             self.textfield_height = dp(90)
             self.textfield_font = dp(46)
+            self.font_style = 'H1'
 
     def __str__(self):
         return 'Password App'
