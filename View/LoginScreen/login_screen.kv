@@ -2,6 +2,7 @@
 #: import get_hex_from_color kivy.utils.get_hex_from_color
 #: set primary get_hex_from_color(app.theme_cls.primary_color)
 
+
 <CustomTextField@MDTextField>:
     fill_color: 0, 0, 0, .2
     multiline: False
@@ -15,10 +16,12 @@
     line_color_focus: 1, 0, 1, 1
     line_color_normal: app.theme_cls.primary_color
 
+
 <MyButton@MDRoundFlatButton>:
     size_hint: None, None
     font_size: app.textfield_font
     pos_hint: {"center_x": .5}
+
 
 <LoginScreenView>
     FitImage:
@@ -32,7 +35,6 @@
             id: user
             on_text_validate: root.login()
             hint_text: 'USERNAME'
-
 
         CustomTextField:
             id: code
@@ -48,16 +50,12 @@
             halign: "center"
             on_ref_press: app.manager_screen.switch_screen('register')
 
-
         MyButton:
             text: 'Enter'
-            font_size: app.textfield_font
+            font_size: app.textfield_font * 2
             on_press: root.login()
 
-        BoxLayout:
-            orientation: 'vertical'
-
-            MyButton:
-                text: 'Exit'
-                font_size: app.textfield_font
-                on_release: app.stop()
+        MyButton:
+            text: 'Exit'
+            font_size: app.textfield_font
+            on_release: app.stop()

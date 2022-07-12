@@ -12,7 +12,7 @@
     font_size: app.textfield_font
 
 <RegisterScreenView>
-
+    on_leave: root.user_manager.commit()
     FitImage:
         source: f"{os.environ['PASS_APP']}/assets/images/squirrel.jpg"
 
@@ -22,7 +22,7 @@
         pos_hint: {"center_y": .92, "center_x": .92}
 
     MDLabel:
-        text: f"Load[color={primary}]66[/color]"
+        text: f"Password[color={primary}]App[/color]"
         color: 1, 1, 1, 1
         bold: True
         pos_hint: {"center_y": .7}
@@ -52,7 +52,7 @@
             hint_text: "Confirm Password"
             password: True
             password_mask: "*"
-            on_text_validate: print() # root.verify_code()
+            on_text_validate: root.register()
 
     MDRoundFlatButton:
         text: "Register"
@@ -62,4 +62,4 @@
         pos_hint: {"center_x": .5}
         y: field_box.y - (self.height + dp(42))
         font_size: app.textfield_font
-        on_press: print() # root.verify_code()
+        on_press: root.register()

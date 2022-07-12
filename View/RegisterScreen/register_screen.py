@@ -1,35 +1,41 @@
-from kivy.properties import ObjectProperty
+import uuid
+
 from kivymd.uix.screen import MDScreen
 
-from View.widgets.custom_widgets import CodeDialog
 from View.Managers.notification_manager import NotificationManager
+from Model.user_manager import user_manager
+from utils import get_password_hash
 
 
 class RegisterScreenView(MDScreen):
-    dialog = ObjectProperty()
+    INSTRUCTION = 'INSERT INTO users VALUES(?, ?, ?);'
 
     def __init__(self, **kwargs):
         super(RegisterScreenView, self).__init__(**kwargs)
         self.notifier = NotificationManager()
+        self.user_manager = user_manager
 
-    def verify_code(self):
+    def register(self):
+        self.user_manager.connect()
         email = self.ids.email.text
+        if self.check_email_usage(email):
+            self.notifier.notify(text='User with this email already exists.')
+            return
         password1 = self.ids.password1.text
         password2 = self.ids.password2.text
-        self.http_manager.register_user(self.success, self.failure, self.failure, email, password1, password2)
-
-    def failure(self, result):
-        self.notifier.notify(text=result, duration=4)
-
-    def success(self, result):
-        if not result['success']:
-            self.notifier.notify(text=result['message'], duration=4)
+        if password1 == password2:
+            password = get_password_hash(password1)
+        else:
+            self.notifier.notify(text='Make sure that your passwords match.')
             return
-        self.ids.email.text = ''
-        self.ids.password1.text = ''
-        self.ids.password2.text = ''
-        self.code_dialog_box()
+        user_id = uuid.uuid4().hex
+        try:
+            self.user_manager.cursor.execute(self.INSTRUCTION, (user_id, email, password))
+            self.notifier.notify(text='You successfully registered. You can login now.')
+        finally:
+            self.user_manager.commit()
 
-    def code_dialog_box(self):
-        self.dialog = CodeDialog()
-        self.dialog.open()
+    def check_email_usage(self, email):
+        search = self.user_manager.cursor.execute(f'SELECT * FROM users WHERE email=?;', (email, ))
+        user = search.fetchone()
+        return user
