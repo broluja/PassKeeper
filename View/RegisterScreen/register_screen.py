@@ -18,6 +18,9 @@ class RegisterScreenView(MDScreen):
     def register(self):
         self.user_manager.connect()
         email = self.ids.email.text
+        if not email:
+            self.notifier.notify(text='PLease enter valid email.')
+            return
         if self.check_email_usage(email):
             self.notifier.notify(text='User with this email already exists.')
             return

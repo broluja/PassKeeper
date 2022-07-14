@@ -14,19 +14,20 @@ class Content(BoxLayout):
         self.data_manager = data_manager
 
     def remove_record(self):
-        record = self.ids.platform.text
-        if not record:
+        platform = self.ids.platform.text
+        if not platform:
             self.ids.label_info.text = 'Field cannot be empty.'
             return
         try:
             self.data_manager.connect()
-            self.data_manager.cursor.execute(f'DELETE FROM credentials WHERE platform=?', (record, ))
+            self.data_manager.cursor.execute(f'DELETE FROM credentials WHERE platform=? AND user_id=?;',
+                                             (platform, self.data_manager.user_id))
             self.data_manager.commit()
             if self.data_manager.cursor.rowcount:
                 self.ids.label_info.text = 'Removed.'
                 self.ids.platform.text = ''
             else:
-                self.ids.label_info.text = f'No such platform - {record}.'
+                self.ids.label_info.text = f'No such platform - {platform}.'
                 self.ids.platform.text = ''
 
         except Exception as e:
@@ -42,13 +43,15 @@ class MainScreenView(MDScreen):
         'Back': 'keyboard-backspace'
     }
     INSTRUCTIONS = [
-        'CREATE TABLE if not exists credentials(platform TEXT, username TEXT, password TEXT)',
+        """CREATE TABLE if not exists credentials(platform TEXT, username TEXT, password TEXT, user_id TEXT, 
+        FOREIGN KEY(user_id) REFERENCES users(id))""",
     ]
     dialog = ObjectProperty()
 
     def __init__(self, **kwargs):
         super(MainScreenView, self).__init__(**kwargs)
         self.data_manager = data_manager
+        self.data_manager.connect()
         self.data_manager.cursor.execute(self.INSTRUCTIONS[0])
         self.data_manager.commit()
 
@@ -65,7 +68,8 @@ class MainScreenView(MDScreen):
             self.ids.info.text = 'Please fill out all fields'
             return
         self.data_manager.connect()
-        self.data_manager.cursor.execute('INSERT INTO credentials VALUES (?,?,?)', (site, username, password))
+        self.data_manager.cursor.execute('INSERT INTO credentials VALUES (?,?,?,?)',
+                                         (site, username, password, self.data_manager.user_id))
         self.data_manager.commit()
         self.clear_data()
         self.ids.info.text = 'Committed'

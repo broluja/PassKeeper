@@ -1,18 +1,18 @@
 import sqlite3
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
+from utils import verify_password
+
+home_location = os.environ['PASS_APP']
 
 
 class DataManager(object):
     """ Class for interaction with database. """
-    username = os.getenv('USERNAME')
-    password = os.getenv('PASSWORD')
 
     def __init__(self):
-        self.conn = sqlite3.connect('passwords.db')
+        self.conn = sqlite3.connect(f'{home_location}/passwords.db')
         self.cursor = self.conn.cursor()
+        self.user_id = None
 
     def __str__(self):
         return f'Data Manager for {self.conn}'
@@ -24,6 +24,24 @@ class DataManager(object):
     def connect(self):
         self.conn = sqlite3.connect('passwords.db')
         self.cursor = self.conn.cursor()
+
+    def get_users_credentials(self, email, password) -> bool:
+        try:
+            self.connect()
+            self.cursor.execute('SELECT password_hashed, id FROM users WHERE email=?;', (email, ))
+            data_object = self.cursor.fetchone()
+            if data_object:
+                password_hashed, user_id = data_object
+                approved = verify_password(password, password_hashed)
+                if approved:
+                    self.user_id = user_id
+            else:
+                approved = False
+
+        finally:
+            self.commit()
+
+        return approved
 
 
 data_manager = DataManager()

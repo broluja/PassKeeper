@@ -6,20 +6,25 @@ from View.Managers.notification_manager import NotificationManager
 
 class LoginScreenView(MDScreen):
     """ Screen for loging in. """
+
     def __init__(self, **kwargs):
         super(LoginScreenView, self).__init__(**kwargs)
         self.data_manager = data_manager
         self.notifier = NotificationManager()
 
     def login(self):
-        username = self.ids.user.text
+        email = self.ids.user.text
         password = self.ids.code.text
-        if not username or not password:
+        if not email or not password:
             self.notifier.notify(text='Please fill out all fields.')
             return
-        if username == self.data_manager.username and password == self.data_manager.password:
-            self.parent.switch_screen('main')
-            return
-        else:
-            self.notifier.notify(text='Please check your credentials.')
+        try:
+            approved = self.data_manager.get_users_credentials(email, password)
+            if approved:
+                self.parent.switch_screen('main')
+                print(self.data_manager.user_id)
+            else:
+                self.notifier.notify(text='Entry denied. Check your credentials.')
+        except Exception as e:
+            print(e)
             return

@@ -1,4 +1,7 @@
 import sqlite3
+import os
+
+home_location = os.environ['PASS_APP']
 
 
 class UserManager(object):
@@ -6,7 +9,7 @@ class UserManager(object):
     INSTRUCTION = 'CREATE TABLE IF NOT EXISTS users(id TEXT, email TEXT, password_hashed TEXT)'
 
     def __init__(self):
-        self.conn = sqlite3.connect('passwords.db')
+        self.conn = sqlite3.connect(f'{home_location}/passwords.db')
         self.cursor = self.conn.cursor()
         self.cursor.execute(self.INSTRUCTION)
 

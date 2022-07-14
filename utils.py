@@ -12,6 +12,10 @@ def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
 
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return pwd_context.verify(plain_password, hashed_password)
+
+
 def create_access_token(subject: Union[str, Any], email: str, expires_delta: timedelta = None) -> str:
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
