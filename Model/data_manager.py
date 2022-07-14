@@ -20,10 +20,12 @@ class DataManager(object):
     def commit(self):
         self.conn.commit()
         self.conn.close()
+        print('DB closed...')
 
     def connect(self):
         self.conn = sqlite3.connect('passwords.db')
         self.cursor = self.conn.cursor()
+        print('DB connected...')
 
     def get_users_credentials(self, email, password) -> bool:
         try:
