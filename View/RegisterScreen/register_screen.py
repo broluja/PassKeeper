@@ -20,10 +20,10 @@ class RegisterScreenView(MDScreen):
         self.user_manager.connect()
         email = self.ids.email.text
         if not email:
-            self.notifier.notify(text='PLease enter valid email.')
+            self.notifier.notify(text='Please enter valid email.')
             return
         if self.check_email_usage(email):
-            self.notifier.notify(text='User with this email already exists.')
+            self.notifier.notify(text='User with this email already exists.', background=[1, 0, 0, .5])
             return
         password1 = self.ids.password1.text
         password2 = self.ids.password2.text
@@ -40,6 +40,6 @@ class RegisterScreenView(MDScreen):
             self.user_manager.commit()
 
     def check_email_usage(self, email):
-        search = self.user_manager.cursor.execute(f'SELECT * FROM users WHERE email=?;', (email, ))
+        search = self.user_manager.cursor.execute(f'SELECT * FROM users WHERE email=?;', (email,))
         user = search.fetchone()
         return user

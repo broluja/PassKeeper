@@ -14,7 +14,8 @@
     font_size: app.textfield_font
     color_mode: 'custom'
     line_color_focus: 1, 0, 1, 1
-    line_color_normal: app.theme_cls.primary_color
+    hint_text_color_normal: 1, 1, 1, 1
+    line_color_normal: 1, 1, 1, 1
 
 
 <MyButton@MDRoundFlatButton>:
@@ -24,6 +25,9 @@
 
 
 <LoginScreenView>
+    on_leave:
+        user.text = ''
+        code.text = ''
     FitImage:
         source: f"{os.environ['PASS_APP']}/assets/images/second.jpg"
     BoxLayout:
@@ -34,18 +38,18 @@
         CustomTextField:
             id: user
             on_text_validate: root.login()
-            hint_text: 'EMAIL'
+            hint_text: 'Email'
 
         CustomTextField:
             id: code
-            hint_text: 'PASSWORD'
+            hint_text: 'Password'
             on_text_validate: root.login()
             password: True
             password_mask: '*'
 
         MDLabel:
             markup: True
-            text: f"Have no account?[ref=<str>][color={primary}] Sign Up![/color][/ref]"
+            text: f"Don`t have an account?[ref=<str>][color={primary}] Sign Up![/color][/ref]"
             color: 1,1,1
             halign: "center"
             on_ref_press: app.manager_screen.switch_screen('register')

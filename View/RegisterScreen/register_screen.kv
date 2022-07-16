@@ -12,8 +12,12 @@
     font_size: app.textfield_font
 
 <RegisterScreenView>
+    on_leave:
+        email.text = ''
+        password1.text = ''
+        password2.text = ''
     FitImage:
-        source: f"{os.environ['PASS_APP']}/assets/images/squirrel.jpg"
+        source: f"{os.environ['PASS_APP']}/assets/images/password1.jpg"
 
     MDFloatingActionButton:
         icon: 'arrow-left-thick'
@@ -21,7 +25,7 @@
         pos_hint: {"center_y": .92, "center_x": .92}
 
     MDLabel:
-        text: f"Password[color={primary}]App[/color]"
+        text: f"[color={primary}]Password[/color]App"
         color: 1, 1, 1, 1
         bold: True
         pos_hint: {"center_y": .7}

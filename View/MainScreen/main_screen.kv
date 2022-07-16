@@ -9,16 +9,23 @@
     font_size: app.textfield_font
     color_mode: 'custom'
     line_color_focus: 1, 0, 1, 1
-    line_color_normal: app.theme_cls.primary_color
+    hint_text_color_normal: 1, 1, 1, 1
+    line_color_normal: 1, 1, 1, 1
 
 
-<MyButton@MDRoundFlatButton>:
+<MyButton@MDFillRoundFlatButton>:
     size_hint: None, None
     font_size: app.textfield_font
     pos_hint: {"center_x": .5}
+    theme_text_color: "Custom"
+    text_color: 1, 1, 1, 1
+    line_color: 1, 1, 1, 1
+    width: app.button_size
+    # height: dp(100)
 
 
 <MainScreenLabel@MDLabel>
+    halign: 'center'
     font_size: app.textfield_font
     theme_text_color: "Custom"
     text_color: 1, 1, 1, 1
@@ -28,7 +35,7 @@
 <MainScreenView>
     on_pre_enter: info.text = ''
     FitImage:
-        source: 'assets/images/main.jpg'
+        source: 'assets/images/password2.jpg'
     MDBoxLayout:
         orientation: "vertical"
         spacing: dp(10)
@@ -47,33 +54,18 @@
             hint_text: 'password'
             on_double_tap: root.paste_password()
 
-        MDBoxLayout:
-            orientation: "horizontal"
-            spacing: dp(20)
-            padding: [40, 5]
+        MyButton:
+            text:"Save"
+            on_release: root.add_data()
 
-            MainScreenLabel:
-                id: blank
-
-            MyButton:
-                text:"Add"
-                width: dp(200)
-                height: dp(100)
-                on_release: root.add_data()
-
-            MyButton:
-                text:"Clear"
-                width: dp(200)
-                height: dp(100)
-                on_release: root.clear_data()
+        MyButton:
+            text:"Clear"
+            on_release: root.clear_data()
 
 
         MainScreenLabel:
             padding: [50, 5]
             id: info
-
-        MainScreenLabel:
-            id: blank1
 
         FloatLayout:
             pos: 0, 0
