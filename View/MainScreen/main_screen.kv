@@ -96,6 +96,9 @@
         height: app.textfield_height
         font_size: app.textfield_font // 2
 
-    MyButton:
+    MDRoundFlatButton:
         text: 'Erase'
         on_press: root.remove_record()
+        size_hint: None, None
+        font_size: app.textfield_font
+        pos_hint: {"center_x": .5}

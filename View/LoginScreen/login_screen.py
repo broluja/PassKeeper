@@ -24,7 +24,7 @@ class LoginScreenView(MDScreen):
                 self.parent.switch_screen('main')
                 print(self.data_manager.user_id)
             else:
-                self.notifier.notify(text='Entry denied. Check your credentials.')
+                self.notifier.notify(text='Entry denied. Check your credentials.', background=[1, 0, 0, .5])
         except Exception as e:
             print(e)
             return

@@ -3,7 +3,7 @@ from pathlib import Path
 
 from kivy import platform
 from kivy.config import Config
-if platform != 'android': Config.set("graphics", "width", "630"); Config.set("graphics", "height", "950")
+if platform == 'android': Config.set("graphics", "width", "630"); Config.set("graphics", "height", "950")
 else: Config.set("graphics", "width", "1500"); Config.set("graphics", "height", "900")
 from kivy.metrics import dp
 from kivymd.app import MDApp
@@ -20,7 +20,7 @@ class PassApp(MDApp):
         self.theme_cls.theme_style = 'Light'
         self.theme_cls.primary_palette = 'LightBlue'
         self.manager_screen = ManagerScreen()
-        if platform != 'android':
+        if platform == 'android':
             self.textfield_width = dp(260)
             self.textfield_height = dp(48)
             self.textfield_font = dp(28)
