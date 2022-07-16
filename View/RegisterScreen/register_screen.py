@@ -8,6 +8,7 @@ from utils import get_password_hash
 
 
 class RegisterScreenView(MDScreen):
+    """ MDScreen for registration of users. """
     INSTRUCTION = 'INSERT INTO users VALUES(?, ?, ?);'
 
     def __init__(self, **kwargs):

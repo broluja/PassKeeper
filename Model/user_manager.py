@@ -5,7 +5,7 @@ home_location = os.environ['PASS_APP']
 
 
 class UserManager(object):
-    """ Class for interaction with database table users. """
+    """ Class for interaction with database table 'users'. """
     INSTRUCTION = 'CREATE TABLE IF NOT EXISTS users(id TEXT, email TEXT, password_hashed TEXT)'
 
     def __init__(self):

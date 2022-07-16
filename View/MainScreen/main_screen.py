@@ -8,7 +8,7 @@ from Model.data_manager import data_manager
 
 
 class Content(BoxLayout):
-
+    """ Content for Main Screen`s Dialog box for deleting passwords. """
     def __init__(self, **kwargs):
         super(Content, self).__init__(**kwargs)
         self.data_manager = data_manager
@@ -35,7 +35,7 @@ class Content(BoxLayout):
 
 
 class MainScreenView(MDScreen):
-    """ Main APP screen. """
+    """ APP`s main screen. """
     data = {
         'Create Password': 'folder-plus',
         'Credentials': 'recycle',

@@ -7,7 +7,7 @@ home_location = os.environ['PASS_APP']
 
 
 class DataManager(object):
-    """ Class for interaction with database. """
+    """ Class for interaction with database table 'credentials'. """
 
     def __init__(self):
         self.conn = sqlite3.connect(f'{home_location}/passwords.db')
