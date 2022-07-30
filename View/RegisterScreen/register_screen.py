@@ -1,4 +1,5 @@
 import uuid
+from email_validator import validate_email, EmailNotValidError
 
 from kivymd.uix.screen import MDScreen
 
@@ -16,11 +17,18 @@ class RegisterScreenView(MDScreen):
         self.notifier = NotificationManager()
         self.user_manager = user_manager
 
+    def on_leave(self, *args):
+        for widget in self.ids.values():
+            widget.text = ''
+
     def register(self):
         self.user_manager.connect()
         email = self.ids.email.text
-        if not email:
-            self.notifier.notify(text='Please enter valid email.')
+        try:
+            valid = validate_email(email)
+            email = valid.email
+        except EmailNotValidError as e:
+            self.notifier.notify(str(e), background=[1, 0, 0, .7])
             return
         if self.check_email_usage(email):
             self.notifier.notify(text='User with this email already exists.', background=[1, 0, 0, .5])
@@ -39,7 +47,7 @@ class RegisterScreenView(MDScreen):
         finally:
             self.user_manager.commit()
 
-    def check_email_usage(self, email):
+    def check_email_usage(self, email: str):
         search = self.user_manager.cursor.execute(f'SELECT * FROM users WHERE email=?;', (email,))
         user = search.fetchone()
         return user

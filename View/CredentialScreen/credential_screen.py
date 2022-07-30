@@ -14,6 +14,7 @@ class CredentialScreenView(MDScreen):
         self.data_manager = data_manager
 
     def on_parent(self, widget, parent):
+        print(widget, parent)
         self.recycleView.data = self.load_passwords()
 
     def load_passwords(self):

@@ -12,6 +12,10 @@ class LoginScreenView(MDScreen):
         self.data_manager = data_manager
         self.notifier = NotificationManager()
 
+    def on_leave(self, *args):
+        for widget in self.ids.values():
+            widget.text = ''
+
     def login(self):
         email = self.ids.user.text
         password = self.ids.code.text

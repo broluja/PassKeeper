@@ -27,7 +27,7 @@ class DataManager(object):
         self.cursor = self.conn.cursor()
         print('DB connected...')
 
-    def get_users_credentials(self, email, password) -> bool:
+    def get_users_credentials(self, email: str, password: str) -> bool:
         try:
             self.connect()
             self.cursor.execute('SELECT password_hashed, id FROM users WHERE email=?;', (email, ))

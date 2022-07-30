@@ -4,7 +4,7 @@ from pathlib import Path
 from kivy import platform
 from kivy.config import Config
 if platform == 'android': Config.set("graphics", "width", "630"); Config.set("graphics", "height", "950")
-else: Config.set("graphics", "width", "1500"); Config.set("graphics", "height", "900")
+else: Config.set("graphics", "width", "1600"); Config.set("graphics", "height", "930")
 from kivy.metrics import dp
 from kivymd.app import MDApp
 

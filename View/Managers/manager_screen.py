@@ -16,7 +16,7 @@ class ManagerScreen(ScreenManager):
         self.app = MDApp.get_running_app()
         self.transition = FadeTransition()
 
-    def create_screen(self, name_screen):
+    def create_screen(self, name_screen: str):
         """ On demand creating screen. Returns Screen object. """
         if name_screen not in self._screens:
             self._screens.append(name_screen)
