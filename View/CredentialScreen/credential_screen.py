@@ -18,14 +18,10 @@ class CredentialScreenView(MDScreen):
         self.recycleView.data = self.load_passwords()
 
     def load_passwords(self):
-        self.data_manager.connect()
-        cursor = self.data_manager.cursor
-        cursor.execute('SELECT * FROM credentials WHERE user_id=?;', (self.data_manager.user_id, ))
-        records = cursor.fetchall()
-        self.data_manager.conn.close()
-        recycle_dict = [{"platform": record[0] + ': ' + record[1] + ' | ' + record[2]}
-                        for record in records]
-        return recycle_dict
+        with self.data_manager as keeper:
+            passwords = keeper.get_users_passwords(self.data_manager.user_id)
+
+        return [{"platform": f'{record[0]}: {record[1]} | {record[2]}'} for record in passwords]
 
 
 class PasswordWidget(BoxLayout):

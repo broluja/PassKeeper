@@ -22,13 +22,8 @@ class LoginScreenView(MDScreen):
         if not email or not password:
             self.notifier.notify(text='Please fill out all fields.')
             return
-        try:
-            approved = self.data_manager.get_users_credentials(email, password)
-            if approved:
+        with self.data_manager as logger:
+            if logger.get_users_credentials(email, password):
                 self.parent.switch_screen('main')
-                print(self.data_manager.user_id)
             else:
                 self.notifier.notify(text='Entry denied. Check your credentials.', background=[1, 0, 0, .5])
-        except Exception as e:
-            print(e)
-            return

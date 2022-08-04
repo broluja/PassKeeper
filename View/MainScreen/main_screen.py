@@ -20,15 +20,14 @@ class Content(BoxLayout):
             return
         try:
             self.data_manager.connect()
-            self.data_manager.cursor.execute(f'DELETE FROM credentials WHERE platform=? AND user_id=?;',
+            self.data_manager.cursor.execute('DELETE FROM credentials WHERE platform=? AND user_id=?;',
                                              (platform, self.data_manager.user_id))
             self.data_manager.commit()
             if self.data_manager.cursor.rowcount:
                 self.ids.label_info.text = 'Removed.'
-                self.ids.platform.text = ''
             else:
                 self.ids.label_info.text = f'No such platform - {platform}.'
-                self.ids.platform.text = ''
+            self.ids.platform.text = ''
 
         except Exception as e:
             self.ids.label_info.text = e
