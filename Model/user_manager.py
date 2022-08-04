@@ -12,6 +12,7 @@ class UserManager(object):
         self.conn = sqlite3.connect(f'{home_location}/passwords.db')
         self.cursor = self.conn.cursor()
         self.cursor.execute(self.INSTRUCTION)
+        self.commit()
 
     def __enter__(self):
         self.connect()
@@ -32,23 +33,19 @@ class UserManager(object):
     def commit(self):
         self.conn.commit()
         self.conn.close()
-        print('DB closed...')
 
     def connect(self):
         self.conn = sqlite3.connect('passwords.db')
-        self.conn.execute('PRAGMA foreign_keys = 1')
         self.cursor = self.conn.cursor()
-        print('DB connected...')
 
-    def check_email_usage(self, email):
+    def check_email_usage(self, email: str):
         sql_command = 'SELECT * FROM users WHERE email=?;'
         self.cursor.execute(sql_command, (email,))
         return self.cursor.fetchone()
 
-    def register_user(self, user_id, email, password):
+    def register_user(self, user_id: str, email: str, password: str):
         sql_command = 'INSERT INTO users VALUES(?, ?, ?);'
         self.cursor.execute(sql_command, (user_id, email, password))
-
 
 
 user_manager = UserManager()

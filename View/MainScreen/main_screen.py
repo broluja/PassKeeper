@@ -5,6 +5,7 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDRectangleFlatIconButton
 
 from Model.data_manager import data_manager
+from View.Managers.notification_manager import NotificationManager
 
 
 class Content(BoxLayout):
@@ -18,19 +19,14 @@ class Content(BoxLayout):
         if not platform:
             self.ids.label_info.text = 'Field cannot be empty.'
             return
-        try:
-            self.data_manager.connect()
-            self.data_manager.cursor.execute('DELETE FROM credentials WHERE platform=? AND user_id=?;',
-                                             (platform, self.data_manager.user_id))
-            self.data_manager.commit()
+
+        with self.data_manager as deleter:
+            deleter.delete_credential(platform, self.data_manager.user_id)
             if self.data_manager.cursor.rowcount:
                 self.ids.label_info.text = 'Removed.'
             else:
                 self.ids.label_info.text = f'No such platform - {platform}.'
             self.ids.platform.text = ''
-
-        except Exception as e:
-            self.ids.label_info.text = e
 
 
 class MainScreenView(MDScreen):
@@ -41,43 +37,41 @@ class MainScreenView(MDScreen):
         'Remove': 'card-remove',
         'Back': 'keyboard-backspace'
     }
-    INSTRUCTIONS = [
-        """CREATE TABLE if not exists credentials(platform TEXT, username TEXT, password TEXT, user_id TEXT, 
-        FOREIGN KEY(user_id) REFERENCES users(id))""",
-    ]
     dialog = ObjectProperty()
 
     def __init__(self, **kwargs):
         super(MainScreenView, self).__init__(**kwargs)
         self.data_manager = data_manager
-        self.data_manager.connect()
-        self.data_manager.cursor.execute(self.INSTRUCTIONS[0])
-        self.data_manager.commit()
+        self.notifier = NotificationManager()
 
     def paste_password(self):
-        third_screen = self.parent.get_screen('generator')
-        my_password = third_screen.my_pass
-        self.ids.password.text = my_password
+        try:
+            third_screen = self.parent.get_screen('generator')
+            my_password = third_screen.my_pass
+            self.ids.password.text = my_password
+        except Exception as e:
+            print(e)
+            self.notifier.notify('Nothing to paste')
 
-    def add_data(self):
+    def get_users_data(self):
         site = self.ids.platform.text
         username = self.ids.username.text
         password = self.ids.password.text
-        if not site or not username or not password:
+        return (site, username, password) if site and username and password else False
+
+    def add_data(self):
+        data = self.get_users_data()
+        if not data:
             self.ids.info.text = 'Please fill out all fields'
             return
-        self.data_manager.connect()
-        self.data_manager.cursor.execute('INSERT INTO credentials VALUES (?,?,?,?)',
-                                         (site, username, password, self.data_manager.user_id))
-        self.data_manager.commit()
+        with self.data_manager as adder:
+            adder.add_new_credential(*data, self.data_manager.user_id)
         self.clear_data()
         self.ids.info.text = 'Committed'
 
     def clear_data(self):
-        self.ids.platform.text = ''
-        self.ids.username.text = ''
-        self.ids.password.text = ''
-        self.ids.info.text = ''
+        for widget in self.ids.values():
+            widget.text = ''
 
     def open_dialog(self):
         self.dialog = MDDialog(
