@@ -32,8 +32,8 @@ class DataManager(object):
         return f'Data Manager for {self.conn}'
 
     def init_credential_table(self):
-        sql_command = """CREATE TABLE if not exists credentials(platform TEXT, username TEXT, password TEXT, user_id TEXT, 
-        FOREIGN KEY(user_id) REFERENCES users(id))"""
+        sql_command = """CREATE TABLE if not exists credentials(platform TEXT, username TEXT, 
+                        password TEXT, user_id TEXT, FOREIGN KEY(user_id) REFERENCES users(id))"""
         self.cursor.execute(sql_command)
         self.commit()
 
