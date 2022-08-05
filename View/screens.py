@@ -1,3 +1,4 @@
+
 screens = {
     'login': 'LoginScreen.login_screen',
     'register': 'RegisterScreen.register_screen',
